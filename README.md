@@ -2,7 +2,9 @@
 
 This is a notebook for home automation (at the moment).
 
-It is personal note that might be useful for others.
+It is personal notes that might be useful for others.
+
+Hardware: Raspberry Pi 2B OS Raspbian
 
 Agenda:
 - Create an API with FLASK/Gunicorn/Nginx
