@@ -1,0 +1,7 @@
+*.lock
+*.conf
+*.secret
+*.sock
+__pycache__/
+Pipfile
+secret.py
