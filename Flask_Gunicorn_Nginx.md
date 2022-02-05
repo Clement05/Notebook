@@ -1,4 +1,5 @@
-Source: [Brandon Wallace](https://dev.to/brandonwallace/deploy-flask-the-easy-way-with-gunicorn-and-nginx-jgc)
+Source: [techwithtim](https://www.techwithtim.net/tutorials/flask/adding-bootstrap/)
+Source: [techwithtim](https://www.techwithtim.net/tutorials/flask/adding-bootstrap/)
 
 Following Brandon Wallace tutorial
 
@@ -141,11 +142,11 @@ WantedBy=multi-user.target
 ```
 
 ```
-$ systemctl enable myproject
+$ systemctl enable api
 
-$ systemctl start myproject
+$ systemctl start api
 
-$ systemctl status myproject
+$ systemctl status api
 ```
 # Nginx Config for our Service
 ```
