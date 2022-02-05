@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for, render_template
 
 app = Flask(__name__)
 
@@ -7,4 +7,4 @@ app = Flask(__name__)
 def index():
     '''Index page route'''
 
-    return '<h1>Hakuna Matata!</h1>'
+    return render_template("index.html")
