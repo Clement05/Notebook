@@ -11,5 +11,5 @@ Config:
 Agenda:
 - [Create an API with FLASK/Gunicorn/Nginx](https://github.com/Clement05/Notebook/blob/main/Flask_Gunicorn_Nginx.md)
 - [Create a template with Bootsrap](https://github.com/Clement05/Notebook/blob/main/Flask_Template.md)
-- Create a call to the netatmo API (expected)
+- [Create a call to the netatmo API](https://github.com/Clement05/Notebook/blob/main/Netatmo.md)
 - Create a Docker Container for apps portability (expected)
