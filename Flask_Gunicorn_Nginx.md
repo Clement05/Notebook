@@ -180,4 +180,4 @@ $ sudo systemctl restart nginx
 
 $ sudo systemctl status nginx
 ```
-browse http://XXX.XXX.X.XX:PPPP
+browse http://XXX.XXX.X.XX:8081
