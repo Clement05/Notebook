@@ -25,9 +25,38 @@ def GetNewToken(code):
             access_token = r.json()["access_token"]
             refresh_token = r.json()["refresh_token"]
             expires_in = r.json()["expires_in"]
-            SaveConfig(json.dumps(r.json()))
-            print(r.json())
+            json_data = r.json()
+            json_data.update({"at": int(round(datetime.datetime.now().timestamp()))})
+            SaveConfig(json.dumps(json_data))
+            print(json_data)
         #elif r.json()["error"]["code"]:
         #       print(r.json()["error"]["message"])
         #else: print(r.json())
-    return json.dumps(r.json()) 
+    return json.dumps(json_data)
+
+def GetRefreshToken():
+    payload = {"grant_type": "refresh_token", "client_id": secret.client_id, "client_secret": secret.client_secret, "refresh_token": LoadConfig()["refresh_token"]}
+    r = requests.post("https://api.netatmo.com/oauth2/token", data=payload)
+    data = r.json()
+    data["at"] = datetime.datetime.now().timestamp()
+    SaveConfig(json.dumps(data))
+
+def GenerateHeader():
+    data = LoadConfig()
+    if datetime.datetime.now().timestamp() > data["at"] + data["expires_in"]:
+        print("ask for refresh token")
+        GetRefreshToken()
+    else:
+        expire_in = int(data["at"] + data["expires_in"] - datetime.datetime.now().timestamp())
+        print ("access token still valid {}".format(expire_in))
+
+    headers = CaseInsensitiveDict()
+    headers["Content-Type"] = "application/json"
+    headers["Authorization"] = "Bearer " + LoadConfig()["access_token"]
+    return headers
+
+def GetHome():
+    headers = GenerateHeader()
+    r = requests.get("https://api.netatmo.com/api/homesdata", headers=headers)
+    return json.dumps(r.json())
+

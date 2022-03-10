@@ -21,3 +21,7 @@ def OAuth():
     
     return res
 
+@app.route("/homedata")
+def GetHome():
+    res = netatmo.GetHome()
+    return res
