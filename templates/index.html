@@ -2,4 +2,5 @@
 {% block title %}Home API{% endblock %}
 {% block content %}
 <h1>Welcome Home!!</h1>
+<a href="https://api.netatmo.com/oauth2/authorize?client_id={{ client_id }}&redirect_uri=http://{{ ip_local }}:8081/auth&scope=write_presence read_presence&state=1">Connect Netatmo App</a>
 {% endblock %}
