@@ -436,4 +436,4 @@ You should get the answer below from your browser
 
 Your floodlight is now turned on.
 
-NB: Instead of returning the passed argument, even better, we could call the api to get the real status of or flodlight
+NB: Instead of returning the passed argument, even better, we could call the api to get the real status of or floodlight
