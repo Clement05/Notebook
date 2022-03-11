@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request
+from markupsafe import escape
 import netatmo
 import secret
 
@@ -25,3 +26,22 @@ def OAuth():
 def GetHome():
     res = netatmo.GetHome()
     return res
+
+@app.route("/turnlight/<status>")
+def TurnLight(status):
+    if escape(status) == "on":
+        netatmo.TurnLight(status)
+        return status
+    elif escape(status) == "off":
+        netatmo.TurnLight(status)
+        return status
+    elif escape(status) == "auto":
+        netatmo.TurnLight(status)
+        return status
+    elif escape(status)== "refreshtokenmanually":
+        netatmo.LoadConfig()
+        netatmo.GetRefreshToken()
+        return "ask for new token"
+    else:
+        return "error args, should be on, off, auto"
+

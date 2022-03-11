@@ -55,3 +55,15 @@ def GetHome():
     r = requests.get("https://api.netatmo.com/api/homesdata", headers=headers)
     return json.dumps(r.json())
 
+def TurnLight(status):
+    payload = {"home":{"id":secret.home_id,"modules":[{"id":secret.camera_id,"floodlight":status}]}}
+    headers = GenerateHeader()
+    r = requests.post("https://api.netatmo.com/api/setstate", headers=headers, data=json.dumps(payload))
+    errors =  "error" in r.json()
+    if errors == False:
+        print(status)
+    elif r.json()["error"]["code"] == 3:
+        print(r.json()["error"]["message"])
+    else: print(r.json())
+
+
