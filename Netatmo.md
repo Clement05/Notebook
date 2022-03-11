@@ -363,8 +363,77 @@ And find the module you want to connect in the modules array, here a camera.
 put these two ids in our secret.py
 ```
 home_id = "<Your Home ID>"
-camera = "<Your Camera ID>"
+camera_id = "<Your Camera ID>"
 
 ```
+# Create our first interaction with netatmo camera: Manage light status
 
+In netatmo.py create TurnbLight function. As parameter this function will take the status that we will send to netatmo api.
 
+To do so, we ,eed once again the header with token Bearer. Thanks to the previous function, we will automatically ask to regenerate access_token if expired.
+
+The payload contains the home_id and the camera_id saved in our secret.py
+
+```
+def TurnLight(status):
+    payload = {"home":{"id":secret.home_id,"modules":[{"id":secret.camera_id,"floodlight":status}]}}
+    headers = GenerateHeader()
+    r = requests.post("https://api.netatmo.com/api/setstate", headers=headers, data=json.dumps(payload))
+    errors =  "error" in r.json()
+    if errors == False:
+        print(status)
+    elif r.json()["error"]["code"] == 3:
+        print(r.json()["error"]["message"])
+    else: print(r.json())
+```
+
+One more time we will have to create a route in application.py.
+
+The route will contain the status we want to post.
+
+In addition if any refresh token manually is needed we put for now the "refreshtokenmanually" option under this route.
+NB for better clarity we could create a dedicated route to refresh manually the token.
+
+```
+@app.route("/turnlight/<status>")
+def TurnLight(status):
+    if escape(status) == "on":
+        netatmo.TurnLight(status)
+        return status
+    elif escape(status) == "off":
+        netatmo.TurnLight(status)
+        return status
+    elif escape(status) == "auto":
+        netatmo.TurnLight(status)
+        return status
+    elif escape(status)== "refreshtokenmanually":
+        netatmo.LoadConfig()
+        netatmo.GetRefreshToken()
+        return "ask for new token"
+    else:
+        return "error args, should be on, off, auto"
+```
+
+For safety reason we need to use escaped string in the url.
+
+Let's then use markupsafe.
+
+```
+pipenv install markupsafe
+```
+
+In the header of our application.py file let's import markupsafe
+
+```
+from markupsafe import escape
+```
+
+Browse http://XXX.XXX.X.XX:8081/turnlight/on
+
+You should get the answer below from your browser
+
+![image](https://user-images.githubusercontent.com/5168811/157893458-cc45972a-e912-411e-9a34-ca6b0754a05d.png)
+
+Your floodlight is now turned on.
+
+NB: Instead of returning the passed argument, even better, we could call the api to get the real status of or flodlight
