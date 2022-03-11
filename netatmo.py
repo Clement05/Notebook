@@ -22,16 +22,11 @@ def GetNewToken(code):
     r = requests.post("https://api.netatmo.com/oauth2/token", data=payload)
     errors =  "error" in r.json()
     if errors == False:
-            access_token = r.json()["access_token"]
-            refresh_token = r.json()["refresh_token"]
-            expires_in = r.json()["expires_in"]
             json_data = r.json()
             json_data.update({"at": int(round(datetime.datetime.now().timestamp()))})
             SaveConfig(json.dumps(json_data))
             print(json_data)
-        #elif r.json()["error"]["code"]:
-        #       print(r.json()["error"]["message"])
-        #else: print(r.json())
+    
     return json.dumps(json_data)
 
 def GetRefreshToken():
