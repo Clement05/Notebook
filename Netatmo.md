@@ -277,3 +277,92 @@ with the following JSON
 if any errors, refer to the documentation
 https://dev.netatmo.com/apidocumentation/oauth#errors
 
+# First call to the netatmo API: Retreive home id and camera id
+
+Let's manage first the renewal of access token.
+
+In our GetNewToken function in netatmo.py, we will manage to add a timestamp when we get the token.
+
+Let's retreive the rerquests.post response json and add the time stamp.
+
+We will add
+```
+json_data = r.json()
+json_data.update({"at": int(round(datetime.datetime.now().timestamp()))})
+```
+And modify the SaveConfig 
+```
+SaveConfig(json.dumps(json_data))
+print(json_data)
+```
+
+Our function should look like 
+```
+def GetNewToken(code):
+    payload = {'grant_type': 'authorization_code', 'client_id': secret.client_id, 'client_secret': secret.client_secret, 'redirect_uri':'http://'+secret.ip_local+':8081/auth', 'scope': 'write_presence read_presence', 'code': code}
+    r = requests.post("https://api.netatmo.com/oauth2/token", data=payload)
+    errors =  "error" in r.json()
+    if errors == False:
+            json_data = r.json()
+            json_data.update({"at": int(round(datetime.datetime.now().timestamp()))})
+            SaveConfig(json.dumps(json_data))
+            print(json_data)
+            
+    return json.dumps(json_data)
+```
+Then we create a function to generate the Header to pass the access token in Bearer
+
+```
+def GenerateHeader():
+    data = LoadConfig()
+    if datetime.datetime.now().timestamp() > data["at"] + data["expires_in"]:
+        print("ask for refresh token")
+        GetRefreshToken()
+    else:
+        expire_in = int(data["at"] + data["expires_in"] - datetime.datetime.now().timestamp())
+        print ("access token still valid {}".format(expire_in))
+
+    headers = CaseInsensitiveDict()
+    headers["Content-Type"] = "application/json"
+    headers["Authorization"] = "Bearer " + LoadConfig()["access_token"]
+    return headers
+```
+
+And finally a function to get home data
+
+```
+def GetHome():
+    headers = GenerateHeader()
+    r = requests.get("https://api.netatmo.com/api/homesdata", headers=headers)
+    return json.dumps(r.json())
+```
+Once we are here, let's go back to our application.py file and edit it to create a new route
+
+```
+@app.route("/homedata")
+def GetHome():
+    res = netatmo.GetHome()
+    return res
+```
+Now browse
+
+http://XXX.XXX.X.XX:8081/homedata
+
+You should get an answer like desbribed in the dev.netatmo in the Homesdata section https://dev.netatmo.com/apidocumentation/security#homesdata
+
+Identify your home id like in the netatmo documentation.
+
+![image](https://user-images.githubusercontent.com/5168811/157840666-844c17b2-5303-405b-a6dd-67543403528e.png)
+
+And find the module you want to connect in the modules array, here a camera.
+
+![image](https://user-images.githubusercontent.com/5168811/157841109-26c4590f-7c27-4521-a61f-b061ce35985e.png)
+
+put these two ids in our secret.py
+```
+home_id = "<Your Home ID>"
+camera = "<Your Camera ID>"
+
+```
+
+
