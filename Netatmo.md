@@ -279,6 +279,8 @@ https://dev.netatmo.com/apidocumentation/oauth#errors
 
 # First call to the netatmo API: Retreive home id and camera id
 
+This section will need as reference https://dev.netatmo.com/apidocumentation/security#homesdata.
+
 Let's manage first the renewal of access token.
 
 In our GetNewToken function in netatmo.py, we will manage to add a timestamp when we get the token.
