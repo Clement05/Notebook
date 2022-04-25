@@ -13,3 +13,5 @@ Agenda:
 - [Create a template with Bootsrap](https://github.com/Clement05/Notebook/blob/main/Flask_Template.md)
 - [Create a call to the netatmo API](https://github.com/Clement05/Notebook/blob/main/Netatmo.md)
 - Create a Docker Container for apps portability (expected)
+- [Create a MultiSensor with ESP8266](https://github.com/Clement05/Notebook/blob/main/MultiSensor.md)
+-- ToDo Wifi secure & Add sensors
