@@ -164,7 +164,7 @@ bool presence = false;
     presence = false;
   }
 ```
-then we had a line in our JSON handler. As <presence> is globally defined and assigned in the loop, we can retrieve value.
+Then we add a line in our JSON handler. As <presence> is globally defined and assigned in the loop, we can retrieve value.
 
 ```
 doc["sensors"]["motion"]["value"] = presence;
