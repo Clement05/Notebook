@@ -129,3 +129,43 @@ serverWeb.handleClient();
 You should see the result
 
 ![image](https://user-images.githubusercontent.com/5168811/165161434-b96943e1-0b9b-4a74-87c4-26b7544ca526.png)
+
+# Motion Sensor
+I got my PIR sensor from AZ Delivery. From the documentation, install DigitalSensor library from https://cdn.shopify.com/s/files/1/1509/1638/files/Bewegungsmelder_Arduino.rar?4080858123666336120
+
+## Includes
+```
+///PIR Sensor Include
+#include <DigitalSensor.h>
+```
+
+## Defines 
+```
+/// PIR Sensor Define
+// Create digital PIR sensor instance on D5 pin
+DigitalSensor pir(14);
+bool presence = false;
+```
+
+## PIR Setup
+```
+//empty
+```
+
+## PIR loop
+```
+  ///PIR Sensor Loop
+  Serial.println("PIR state: ");
+  if (pir.status()) {
+    presence = true;
+    Serial.println("Someone detected");
+  } else {
+    Serial.println("No one detected");
+    presence = false;
+  }
+```
+then we had a line in our JSON handler. As <presence> is globally defined and assigned in the loop, we can retrieve value.
+
+```
+doc["sensors"]["motion"]["value"] = presence;
+```
