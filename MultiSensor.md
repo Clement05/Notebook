@@ -321,3 +321,52 @@ float h = 0.0;
     presence = false;
   }
   ```
+# Gas Sensor
+  
+ I got my gas sensor from AZ delivery, MQ135. You can find the arduino labriry here https://cdn.shopify.com/s/files/1/1509/1638/files/MQ-135_Arduino.rar?23028124689217935. You need to add it to your IDE to the managed libraries.
+  
+  ## Includes
+  ```
+  ///Gas Sensor Include
+#include "MQ135.h"
+  ```
+  
+  ## Includes
+  ```
+  /// Gas Sensor Define
+#define ANALOGPIN A0    //  Define Analog PIN on Arduino Board
+#define RZERO 206.85    //  Define RZERO Calibration Value
+MQ135 gasSensor = MQ135(ANALOGPIN);
+  ```
+  
+  ## Gas Sensor Setup
+  ```
+    ///Gas Sensor Setup
+  float rzero = gasSensor.getRZero();
+  delay(3000);
+  Serial.print("MQ135 RZERO Calibration Value : ");
+  Serial.println(rzero);
+  ```
+  ## Gas Sensor Loop
+  ```
+  ///Gas Sensor Loop
+  float ppm = gasSensor.getPPM();
+  //delay(1000);
+  //digitalWrite(13,HIGH);
+  Serial.print("CO2 ppm value : ");
+  Serial.println(ppm);
+  ```
+  
+  Because my wiring is not so clean yet I choose to add additional ground and Vout with 
+  ## Define
+  ```
+  #define AdditionalGround  0
+#define AdditionalVout  2
+  ```
+  ## Setup
+  ```
+  pinMode(AdditionalGround, OUTPUT);
+  pinMode(AdditionalVout, OUTPUT);
+  digitalWrite(AdditionalGround, LOW);
+  digitalWrite(AdditionalVout, HIGH);
+  ```
