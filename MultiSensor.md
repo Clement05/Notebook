@@ -275,3 +275,49 @@ float h = 0.0;
   doc["sensors"]["Humidity"]["value"] = h;
   doc["sensors"]["Humidity"]["unit"] = "%";
   ```
+# LED
+  I added couple of LED for user feedback
+  
+  ## Defines
+  
+ ```
+  // LED Wifi
+#define WiFiLED  12
+#define MotionLED  15
+  ```
+  
+  ## LED Setup
+  ```
+    //LED Setup
+  pinMode(WiFiLED, OUTPUT);
+  pinMode(MotionLED, OUTPUT);
+  ```
+  
+  ## WiFi output
+  
+  ```
+    if (WiFi.isConnected()) {
+    digitalWrite(WiFiLED, HIGH);
+    serverWeb.handleClient();
+  }
+  else {
+    digitalWrite(WiFiLED, LOW);
+    delay(1000);
+    digitalWrite(WiFiLED, HIGH);
+  }
+  ```
+  
+  ## PIR output
+  ```
+    ///PIR Sensor Loop
+  Serial.println("PIR state: ");
+  if (pir.status()) {
+    presence = true;
+    digitalWrite(MotionLED, HIGH);
+    Serial.println("Someone detected");
+  } else {
+    digitalWrite(MotionLED, LOW);
+    Serial.println("No one detected");
+    presence = false;
+  }
+  ```
