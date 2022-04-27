@@ -356,17 +356,3 @@ MQ135 gasSensor = MQ135(ANALOGPIN);
   Serial.print("CO2 ppm value : ");
   Serial.println(ppm);
   ```
-  
-  Because my wiring is not so clean yet I choose to add additional ground and Vout with 
-  ## Define
-  ```
-  #define AdditionalGround  0
-#define AdditionalVout  2
-  ```
-  ## Setup
-  ```
-  pinMode(AdditionalGround, OUTPUT);
-  pinMode(AdditionalVout, OUTPUT);
-  digitalWrite(AdditionalGround, LOW);
-  digitalWrite(AdditionalVout, HIGH);
-  ```
