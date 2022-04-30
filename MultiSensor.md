@@ -356,3 +356,31 @@ MQ135 gasSensor = MQ135(ANALOGPIN);
   Serial.print("CO2 ppm value : ");
   Serial.println(ppm);
   ```
+  
+  #Home Assistant Configuration
+  
+  Browse to your configuration folder for home hassistant and edit configuration.yaml and add 
+  
+  ```
+  rest:
+  - resource: http://XXX.XXX.X.XX #That should be replaced by your ESP8266 IP's address
+    sensor:
+      - name: "MultiSensor1.Light"
+        value_template: "{{ value_json.sensors.light.value }}"
+        unit_of_measurement: "lx"
+        device_class: illuminance
+      - name: "MultiSensor1.Temperature"
+        value_template: "{{ value_json.sensors.temperature.value }}"
+        unit_of_measurement: "°c"
+        device_class: temperature
+      - name: "MultiSensor1.Humidity"
+        value_template: "{{ value_json.sensors.humidity.value }}"
+        unit_of_measurement: "%"
+        device_class: humidity
+
+    binary_sensor:
+      - name: "MultiSensor1.Motion"
+        value_template: "{{ value_json.sensors.motion.value }}"
+        device_class: motion
+```
+Note: we can add formating and round in our value template
