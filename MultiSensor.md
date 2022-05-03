@@ -395,3 +395,5 @@ MQ135 gasSensor = MQ135(ANALOGPIN);
         device_class: motion
 
 ```
+Note secure with SSL connection
+  https://www.youtube.com/watch?v=Wm1xKj4bKsY
