@@ -356,8 +356,15 @@ MQ135 gasSensor = MQ135(ANALOGPIN);
   Serial.print("CO2 ppm value : ");
   Serial.println(ppm);
   ```
+ 
+  We can output value in our webserver with 
   
-  #Home Assistant Configuration
+  ```
+  doc["sensors"]["gas"]["value"] = gasSensor.getPPM();
+  doc["sensors"]["gas"]["unit"] = "ppm";
+  ```
+
+#Home Assistant Configuration
   
   Browse to your configuration folder for home hassistant and edit configuration.yaml and add 
   
@@ -366,21 +373,25 @@ MQ135 gasSensor = MQ135(ANALOGPIN);
   - resource: http://XXX.XXX.X.XX #That should be replaced by your ESP8266 IP's address
     sensor:
       - name: "MultiSensor1.Light"
-        value_template: "{{ value_json.sensors.light.value }}"
+        value_template: "{{ value_json.sensors.light.value | round(1)}}"
         unit_of_measurement: "lx"
         device_class: illuminance
       - name: "MultiSensor1.Temperature"
-        value_template: "{{ value_json.sensors.temperature.value }}"
+        value_template: "{{ value_json.sensors.temperature.value | round(1)}}"
         unit_of_measurement: "°c"
         device_class: temperature
       - name: "MultiSensor1.Humidity"
-        value_template: "{{ value_json.sensors.humidity.value }}"
+        value_template: "{{ value_json.sensors.humidity.value | round(1)}}"
         unit_of_measurement: "%"
         device_class: humidity
+      - name: "MultiSensor1.Gas"
+        value_template: "{{ value_json.sensors.gas.value | round(1)}}"
+        unit_of_measurement: "ppm"
+        device_class: carbon_dioxide
 
     binary_sensor:
       - name: "MultiSensor1.Motion"
         value_template: "{{ value_json.sensors.motion.value }}"
         device_class: motion
+
 ```
-Note: we can add formating and round in our value template
